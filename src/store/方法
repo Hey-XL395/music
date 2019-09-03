@@ -1,0 +1,94 @@
+网易云项目总结：
+看了实体APP，大部分都是按照APP做的，但是一些细节功能并没有做，比如一些过度的动画，
+播放之后主页右上角的动画也做的不一样，感觉一个完整的APP还是比较难，也许我并不能实现所有
+功能，所以需要提升的地方还很多，尤其是在做歌词的时候，发现虽然能处理获得的数据，但是和
+实际需要的结果还是有很大的距离，最希望的还是能够自己解决问题，上班之后只能自己想办法了。
+在这次项目中，做的最久的应该是播放，想让播放完全达到软件的效果，随机播放时需要存到vuex,
+点击主页右上角进入播放就需要在之前将播放记录存到本地。项目的大部分不是很难，但是要做
+用户体验以及完整的软件功能和项目优化比较难，最近也看了一下面试题，感觉光是html就有
+很多不知道的，所以平时还需要巩固基础。动画也是比较薄弱的地方，要看之前的视频巩固一下。
+
+这次有些页面引用了很多组件，为了让请求不一次性发完，需要在组件上加判断条件，当用户点击到
+当前组件时再显示。如果子组件需要改变父组件的值，要加.sync。用this.$emit("update:flag", false)
+
+
+
+
+
+自己的方法处理歌词，虽然不能达到效果，但研究了很久，了解了一些其他方法，知道了...的具体用法
+，熟悉了一些，所以还是要自己研究才会有收获。
+let lrc1 = this.lrc.split("[");
+lrc1.shift();
+lrc1.map(item => {
+let j = item.indexOf("]");
+// -1-1-1-1-1-1-11-1-1-1-1-1-1-1-11-1-1-1-1-1-1-1
+// Number(item.slice(0, item.slice(0, j).indexOf(":")) * 60) +
+// Number(item.slice(item.slice(0, j).indexOf(":") + 1, j))
+const source = JSON.parse(
+`{"${item.slice(0, j)}":"${item.slice(j + 1, item.length - 1)}"}`
+);
+// console.log(source);
+this.lrcvip.push(source);
+});
+// console.log(this.lrcvip);
+this.lrcvip = Object.assign(...this.lrcvip);
+
+
+// this.marginTop++网上的方法
+// console.log(this.marginTop);
+if (this.currentIndex222 >= 6) {
+//超过6行开始滚动
+this.marginTop = (this.currentIndex222 - 6) * 20;
+}
+
+// 文稿对应行颜色改变
+console.log(this.lrcvip);
+if (this.currentIndex222 !== this.lrcvip.length - 1) {
+// 分钟
+this.minute = parseInt(this.$play.currentTime / 60);
+if (this.minute < 10) {
+this.minute = `0${this.minute}`;
+}
+// console.log(this.minute);
+// 秒
+this.second = parseInt(this.$play.currentTime % 60);
+if (this.second < 10) {
+this.second = `0${this.second}`;
+}
+this.time = `${this.minute}:${this.second}`;
+console.log(this.time);
+for(let key in this.lrcvip){
+console.log(key.slice(0,5));
+console.log(this.time);
+key = key.slice(0,5)
+let i = 0
+if (this.time === key) {
+  i++
+}
+this.currentIndex222 = i
+}
+// console.log(this.currentIndex222);
+
+for (var j = this.currentIndex222; j < 58; j++) {
+// 当前时间与前一行，后一行时间作比较， j:代表当前行数
+// if (this.currentIndex222 === this.lrcvip.length - 2) {
+//   //最后一行只能与前一行时间比较
+//   if (
+//     parseFloat(this.$play.currentTime) >
+//     parseFloat(this.lrcvip[this.lrcvip.length - 1][0])
+//   ) {
+//     this.currentIndex222 = this.lrcvip.length - 1;
+//     return;
+//   }
+// } else {
+//   if (
+//     parseFloat(this.$play.currentTime) >
+//       parseFloat(this.$play[j][0]) &&
+//     parseFloat(this.$play.currentTime) <
+//       parseFloat(this.$play[j + 1][0])
+//   ) {
+//     console.log(j);
+//     this.currentIndex222 = j;
+//     return;
+//   }
+// }
