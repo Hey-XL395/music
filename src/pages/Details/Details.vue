@@ -170,15 +170,12 @@ export default {
     },
     // 点击歌曲去播放页面
     toplay(item, index) {
-      console.log(item);
-      console.log(index);
       wx.navigateTo({
         url: `../Play/Play?id=${JSON.stringify(this.IDarr)}&index=${index}`
       });
     }
   },
   onLoad: function(options) {
-    console.log(options);
     this.options = options;
     if (options.title === "推荐歌单") {
       let str = options.id;
